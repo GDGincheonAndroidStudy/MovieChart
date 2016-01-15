@@ -1,57 +1,24 @@
 package com.seunghyo.moviechart;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        new MovieTask().execute();
-
-        final View rootView = (View) getLayoutInflater().inflate(R.layout.main, null);
-        rootView.setBackgroundColor(Color.WHITE);
-        ListView listView = (ListView) rootView.findViewById(R.id.list);
-        CustomList customList = new CustomList(MainActivity.this);
-        listView.setAdapter(customList);
-
-        setContentView(rootView);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        setContentView(R.layout.activity_main);
+        MovieNetwork network = new MovieNetwork();
+        network.getChart("430156241533f1d058c603178cc3ca0e","20160114");
     }
 
-
-
-    public class CustomList extends ArrayAdapter<String> {
+    /*public class CustomList extends ArrayAdapter<String> {
 
         private final Activity context;
 
@@ -86,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
             return rowView;
         }
-    }
+    }*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -109,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class MovieTask extends AsyncTask<String, String, String> {
+    /*class MovieTask extends AsyncTask<String, String, String> {
 
         private final String LOG_TAG = "Movie Task";
         private ArrayList<String> movie_name = new ArrayList<String>();
@@ -121,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 throws JSONException {
 
             JSONObject movieJson = new JSONObject(MovieJsonStr);
-            JSONArray MovieArray = movieJson.getJSONArray("dailyBoxOfficeList");
+            JSONArray MovieArray = movieJson.getJSONArray("dailyBoxOfficeResult");
 
             for (int i = 0; i < MovieArray.length(); i++) {
 
@@ -148,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            String movie_url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?";
+            String movie_url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=430156241533f1d058c603178cc3ca0e&targetDt=20160114";
             HttpsURLConnection urlConnection = null;
             BufferedReader reader = null;
             String key = "430156241533f1d058c603178cc3ca0e";
@@ -164,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         .appendQueryParameter(KEY_PARAM, key)
                         .appendQueryParameter(DATE_PARAM, date2).build();
 
-                URL url = new URL(builtUri.toString());
+                URL url = new URL(movie_url);
                 Log.e(LOG_TAG, "Built URI " + builtUri.toString());
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
@@ -211,5 +179,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-    }
+    }*/
 }
