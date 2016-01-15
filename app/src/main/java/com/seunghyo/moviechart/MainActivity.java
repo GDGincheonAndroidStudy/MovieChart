@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         new MovieTask().execute();
 
         final View rootView = (View) getLayoutInflater().inflate(R.layout.main, null);
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         public View getView(int position, View view, ViewGroup parent) {
 
             LayoutInflater inflater = context.getLayoutInflater();
-            String price_str = "error!";
             View rowView= inflater.inflate(R.layout.listitem, null, true);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.image);
             TextView title = (TextView) rowView.findViewById(R.id.title);
@@ -148,11 +148,12 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 
-            String movie_url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=430156241533f1d058c603178cc3ca0e&targetDt=20160114";
+            String movie_url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?";
             HttpsURLConnection urlConnection = null;
             BufferedReader reader = null;
-            String key = "328f74e12c00bd38e11e74d55fc29cdb";
+            String key = "430156241533f1d058c603178cc3ca0e";
             String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+            String date2 = "20160114";
             String movieJsonStr = null;
 
             try {
@@ -161,10 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Uri builtUri = Uri.parse(movie_url).buildUpon()
                         .appendQueryParameter(KEY_PARAM, key)
-                        .appendQueryParameter(DATE_PARAM, date).build();
+                        .appendQueryParameter(DATE_PARAM, date2).build();
 
                 URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+                Log.e(LOG_TAG, "Built URI " + builtUri.toString());
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
